@@ -1,41 +1,89 @@
-# Light compressor
+# Light Compressor
 
-Пока пишу по-русски и как обычный комментарий, в последствии переделаю.
+This library is designed to provide optimal decompression and compression speed for data streams from databases and files.
+My project requires maximum-speed processing of byte streams and transferring compressed data to another stream.
+After testing all available solutions, I found their speed unsatisfactory, so I optimized the existing implementation to achieve better performance.
 
-Суть библиотеки - обеспечить оптимальную скорость распаковки и упаковки сжатого потока данных из БД и файлов.
-Для моего проекта требуется максимально быстро обработать поток байт и передать в другой поток упакованные данные в сжатом формате.
-Проверил все готовые решения, скорость не устроила, поэтому поправил то что было как смог, стало быстрее.
-У стрим ридера нет и не может быть методов tell и seek, только прямое последовательное чтение из потока.
-Для моего проекта этого достаточно, поэтому делаю так.
-Форматы сжатия только LZ4 и ZSTD.
+The stream reader use direct sequential reading from the stream with explicit size indication.
+This meets all requirements for my project.
+Supported compression formats: **LZ4** and **ZSTD** only.
 
+## Examples
 
-Для ридера при чтении из файла доступно автоматическое определение формата сжатия (проверка по сигнатуре LZ4, ZSTD или сжатие отсутствует)
+### File reading
+
+When reading from files, automatic compression format detection is available (checks for LZ4/ZSTD signatures or no compression):
 
 ```python
 from light_compressor import define_reader
-
-
 fileobj = open("some_path_to_file.bin", "rb")
 decompressed_stream = define_reader(fileobj)
 ```
 
-Для чтения в потоке требуется явно передать метод сжатия
+### File writing
 
 ```python
-from light_compressor import define_reader, CompressionMethod
+from light_compressor import (
+    LZ4Compressor,
+    ZSTDCompressor,
+)
+# some data in bytes
+bytes_data: list[bytes]
+# for example we using ZSTDCompressor
+compressor = ZSTDCompressor()
+fileobj = open("some_path_to_file.bin", "wb")
 
+for data in compressor.send_chunks(bytes_data):
+    fileobj.write(data)
 
-# Получение распакованного файлоподобного объекта из потока, сжатого в ZSTD
+print("Original size is:", compressor.decompressed_size)
+print("Compressed size is:", fileobj.tell())
+
+fileobj.close()
+```
+
+### Stream reading
+
+For stream processing, the compression method must be explicitly specified
+
+```python
+from light_compressor import (
+    define_reader,
+    CompressionMethod,
+)
+# Get decompressed file-like object from ZSTD-compressed stream
 decompressed_stream = define_reader(fileobj, CompressionMethod.ZSTD)
 ```
 
-Упаковка в режиме стрим
-
+### Stream writing
 
 ```python
-from light_compressor import define_writer, CompressionMethod
-
-# Получение генератора упакованного массива байт, сжатого в ZSTD
+from light_compressor import (
+    define_writer,
+    CompressionMethod,
+)
+# some data in bytes
+bytes_data: list[bytes]
+# Get generator yielding ZSTD-compressed byte chunks
 compressed_stream = define_writer(bytes_data, CompressionMethod.ZSTD)
+```
+
+## Installation
+
+From pip
+
+```bash
+pip install light-compressor
+```
+
+From local directory
+
+```bash
+pip install .
+```
+
+From git
+
+```bash
+pip install git+https://github.com/0xMihalich/light_compressor
 ```

@@ -39,7 +39,7 @@ def define_reader(
     elif compressor_method == CompressionMethod.ZSTD:
         decompressor = ZSTDDecompressor
     else:
-        raise ValueError(f"Unknown compression method {compressor_method}")
+        raise ValueError(f"Unsupported compression method {compressor_method}")
 
     raw = DecompressReader(fileobj, decompressor)
     return BufferedReader(raw)

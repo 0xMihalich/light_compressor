@@ -7,9 +7,6 @@ from zstandard._cffi import (
 cdef class ZSTDCompressor:
     """ZSTD data_chunk compressor."""
 
-    cdef object context
-    cdef object compression_level
-
     def __init__(
         self,
         int compression_level = 3,
@@ -18,6 +15,7 @@ cdef class ZSTDCompressor:
 
         self.context = lib.ZSTD_createCCtx()
         self.compression_level = compression_level
+        self.decompressed_size = 0
 
         if self.context == ffi.NULL:
             raise MemoryError("Failed to create compression context")
@@ -38,14 +36,18 @@ cdef class ZSTDCompressor:
         cdef bytes data_chunk, compressed
         cdef object src_buffer, dst_capacity
         cdef object dst_buffer, out_buffer, in_buffer
+        cdef unsigned long long data_chunk_size
+        self.decompressed_size = 0
 
         for data_chunk in bytes_data:
-            if len(compressed_chunks) > 1024:
+            if len(compressed_chunks) > 128:
                 yield b"".join(compressed_chunks)
                 compressed_chunks.clear()
 
+            data_chunk_size = len(data_chunk)
+            self.decompressed_size += data_chunk_size
             src_buffer = ffi.from_buffer(data_chunk)
-            dst_capacity = lib.ZSTD_compressBound(len(data_chunk))
+            dst_capacity = lib.ZSTD_compressBound(data_chunk_size)
             dst_buffer = ffi.new("char[]", dst_capacity)
             out_buffer = ffi.new(
                 "ZSTD_outBuffer *",
@@ -53,7 +55,7 @@ cdef class ZSTDCompressor:
             )
             in_buffer = ffi.new(
                 "ZSTD_inBuffer *",
-                {"src": src_buffer, "size": len(data_chunk), "pos": 0},
+                {"src": src_buffer, "size": data_chunk_size, "pos": 0},
             )
 
             while in_buffer.pos < in_buffer.size:

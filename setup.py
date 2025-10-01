@@ -24,6 +24,7 @@ extensions = [
     ),
 ]
 
+
 setup(
     name="light_compressor",
     package_dir={"": "src"},

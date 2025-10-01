@@ -16,9 +16,12 @@ def define_writer(
 
     if compressor_method == CompressionMethod.NONE:
         return bytes_data
-    if compressor_method == CompressionMethod.LZ4:
-        return LZ4Compressor(bytes_data)
-    if compressor_method == CompressionMethod.ZSTD:
-        return ZSTDCompressor(bytes_data)
 
-    raise ValueError(f"Unknown compression method {compressor_method}")
+    if compressor_method == CompressionMethod.LZ4:
+        compressor = LZ4Compressor()
+    elif compressor_method == CompressionMethod.ZSTD:
+        compressor = ZSTDCompressor()
+    else:
+        raise ValueError(f"Unsupported compression method {compressor_method}")
+
+    return compressor.send_chunks(bytes_data)
