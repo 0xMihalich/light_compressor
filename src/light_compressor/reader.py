@@ -1,3 +1,5 @@
+"""Quick stream reader from compress file objects."""
+
 from _compression import DecompressReader
 from io import BufferedReader
 

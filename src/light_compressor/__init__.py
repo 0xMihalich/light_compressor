@@ -1,3 +1,5 @@
+"""Library for read compressed stream and write compressed chunks."""
+
 from .compressor_method import CompressionMethod
 from .reader import define_reader
 from .decompressors import (
@@ -12,3 +14,4 @@ __all__ = (
     "LZ4Decompressor",
     "ZSTDDecompressor",
 )
+__version__ = "0.0.0.1"
