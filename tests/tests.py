@@ -62,7 +62,6 @@ def test_stream() -> None:
     ):
 
         fileobj.seek(0)
-        fileobj.seek(0)
         fileobj.truncate()
 
         for data in define_writer(bytes_data, compression_method):
