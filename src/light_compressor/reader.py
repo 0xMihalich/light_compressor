@@ -3,6 +3,7 @@
 from _compression import DecompressReader
 from io import BufferedReader
 
+from .compressor_method import CompressionMethod
 from .decompressors import (
     LZ4Decompressor,
     ZSTDDecompressor,
@@ -11,11 +12,11 @@ from .decompressors import (
 
 def define_reader(
     fileobj: BufferedReader,
-    method_value: int = 0,
+    compressor_method: CompressionMethod | None = None,
 ) -> BufferedReader:
     """Select current method for stream object."""
 
-    if not method_value:
+    if not compressor_method:
         """Auto detect method section from file signature.
         Warning!!! Not work with stream objects!!!"""
 
@@ -23,22 +24,22 @@ def define_reader(
         signature = fileobj.read(4)
         fileobj.seek(pos)
 
-        if signature == b"\x04\"M\x18":  # LZ4
-            method_value = 0x82
-        elif signature == b"(\xb5/\xfd":  # ZSTD
-            method_value = 0x90
+        if signature == b"\x04\"M\x18":
+            compressor_method = CompressionMethod.LZ4
+        elif signature == b"(\xb5/\xfd":
+            compressor_method = CompressionMethod.ZSTD
         else:
-            method_value = 0x02
+            compressor_method = CompressionMethod.NONE
 
-    if method_value == 0x02:
+    if compressor_method == CompressionMethod.NONE:
         return fileobj
 
-    if method_value == 0x82:
+    if compressor_method == CompressionMethod.LZ4:
         decompressor = LZ4Decompressor
-    elif method_value == 0x90:
+    elif compressor_method == CompressionMethod.ZSTD:
         decompressor = ZSTDDecompressor
     else:
-        raise ValueError(f"Unknown compression method {method_value}")
+        raise ValueError(f"Unknown compression method {compressor_method}")
 
     raw = DecompressReader(fileobj, decompressor)
     return BufferedReader(raw)

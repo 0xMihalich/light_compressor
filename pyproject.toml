@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "light_compressor"
-version = "0.0.0.1"
+version = "0.0.1.0"
 description = "Library for read compressed stream and write compressed chunks."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -22,9 +22,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "backports.zoneinfo==0.2.1; python_version < '3.9'",
-    "pandas>=2.1.0",
-    "polars>=0.20.31",
+    "lz4>=4.4.4",
+    "zstandard>=0.25.0",
 ]
 
 [project.urls]

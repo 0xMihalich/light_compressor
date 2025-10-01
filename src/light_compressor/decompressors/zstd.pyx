@@ -8,6 +8,7 @@ cdef class ZSTDDecompressor:
     """ZSTD frame cython decompressor."""
 
     def __init__(self):
+
         self._dctx = lib.ZSTD_createDCtx()
 
         if self._dctx == ffi.NULL:
@@ -29,6 +30,7 @@ cdef class ZSTDDecompressor:
         self._input_data = None
 
     def __enter__(self):
+
         return self
 
     def __exit__(
@@ -37,6 +39,7 @@ cdef class ZSTDDecompressor:
         object exception,
         object traceback,
     ):
+
         self._dctx = None
         self.eof = None
         self.needs_input = None

@@ -27,5 +27,15 @@ from light_compressor import define_reader, CompressionMethod
 
 
 # Получение распакованного файлоподобного объекта из потока, сжатого в ZSTD
-decompressed_stream = define_reader(fileobj, CompressionMethod.ZSTD.value)
+decompressed_stream = define_reader(fileobj, CompressionMethod.ZSTD)
+```
+
+Упаковка в режиме стрим
+
+
+```python
+from light_compressor import define_writer, CompressionMethod
+
+# Получение генератора упакованного массива байт, сжатого в ZSTD
+compressed_stream = define_writer(bytes_data, CompressionMethod.ZSTD)
 ```
