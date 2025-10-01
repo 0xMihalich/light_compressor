@@ -3,6 +3,7 @@
 ## 0.0.1.1
 
 * Fix & Refactor define_writer
+* Add cffi to requirements.txt
 * Add tests
 * Add attribute decompressed_size for LZ4Compressor & ZSTDCompressor
 * Change error message for define_reader & define_writer
