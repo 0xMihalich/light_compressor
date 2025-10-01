@@ -1,6 +1,3 @@
-from _compression import DecompressReader
-from io import BufferedReader
-
 from lz4.frame._frame import (
     create_decompression_context,
     decompress_chunk,
@@ -34,8 +31,8 @@ cdef class LZ4Decompressor:
         self._context = None
         self.eof = None
         self.needs_input = None
-        self.unused_data = b""
-        self._unconsumed_data = b""
+        self.unused_data = None
+        self._unconsumed_data = None
         self._return_bytearray = None
 
     cpdef void reset(self):
@@ -44,8 +41,8 @@ cdef class LZ4Decompressor:
         reset_decompression_context(self._context)
         self.eof = False
         self.needs_input = True
-        self.unused_data = b""
-        self._unconsumed_data = b""
+        self.unused_data = None
+        self._unconsumed_data = None
 
     cpdef bytes decompress(
         self,
@@ -85,16 +82,3 @@ cdef class LZ4Decompressor:
         self.eof = eoframe
 
         return decompressed
-
-
-class LZ4StreamReader(BufferedReader):
-    """LZ4 reader for stream."""
-
-    def __init__(
-        self,
-        object source,
-    ) -> None:
-        """Class initialization."""
-
-        self.raw = DecompressReader(source, LZ4Decompressor)
-        super().__init__(self.raw)

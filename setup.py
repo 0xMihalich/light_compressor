@@ -7,12 +7,12 @@ from Cython.Build import cythonize
 
 extensions = [
     Extension(
-        "light_compressor.stream_reader.lz4",
-        ["src/light_compressor/stream_reader/lz4.pyx"],
+        "light_compressor.decompressors.lz4",
+        ["src/light_compressor/decompressors/lz4.pyx"],
     ),
     Extension(
-        "light_compressor.stream_reader.zstd",
-        ["src/light_compressor/stream_reader/zstd.pyx"],
+        "light_compressor.decompressors.zstd",
+        ["src/light_compressor/decompressors/zstd.pyx"],
     ),
 ]
 
@@ -21,7 +21,7 @@ setup(
     package_dir={"": "src"},
     ext_modules=cythonize(extensions, language_level="3"),
     packages=[
-        "light_compressor.stream_reader",
+        "light_compressor.decompressors",
     ],
     package_data={
         "light_compressor": [

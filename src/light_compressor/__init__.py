@@ -1,14 +1,14 @@
 from .compressor_method import CompressionMethod
 from .reader import define_reader
-from .stream_reader import (
-    LZ4StreamReader,
-    ZSTDStreamReader,
+from .decompressors import (
+    LZ4Decompressor,
+    ZSTDDecompressor,
 )
 
 
 __all__ = (
     "define_reader",
     "CompressionMethod",
-    "LZ4StreamReader",
-    "ZSTDStreamReader",
+    "LZ4Decompressor",
+    "ZSTDDecompressor",
 )

@@ -1,16 +1,16 @@
+from _compression import DecompressReader
 from io import BufferedReader
 
-
-from .stream_reader import (
-    LZ4StreamReader,
-    ZSTDStreamReader,
+from .decompressors import (
+    LZ4Decompressor,
+    ZSTDDecompressor,
 )
 
 
 def define_reader(
     fileobj: BufferedReader,
     method_value: int = 0,
-) -> LZ4StreamReader | ZSTDStreamReader | BufferedReader:
+) -> BufferedReader:
     """Select current method for stream object."""
 
     if not method_value:
@@ -30,9 +30,13 @@ def define_reader(
 
     if method_value == 0x02:
         return fileobj
-    if method_value == 0x82:
-        return LZ4StreamReader(fileobj)
-    if method_value == 0x90:
-        return ZSTDStreamReader(fileobj)
 
-    raise ValueError(f"Unknown compression method {method_value}")
+    if method_value == 0x82:
+        decompressor = LZ4Decompressor
+    elif method_value == 0x90:
+        decompressor = ZSTDDecompressor
+    else:
+        raise ValueError(f"Unknown compression method {method_value}")
+
+    raw = DecompressReader(fileobj, decompressor)
+    return BufferedReader(raw)
