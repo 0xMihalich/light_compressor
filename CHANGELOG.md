@@ -9,6 +9,8 @@
 * Change error message for define_reader & define_writer
 * Change chunk size to 128 items in list of compressed_chunks
 * Translate README.md to english and add more examples
+* Development Status change to 4 (Beta)
+* Revision python versions
 
 ## 0.0.1.0
 
