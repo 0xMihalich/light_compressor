@@ -1,5 +1,10 @@
 # Version History
 
+## 0.0.1.2
+
+* Add MIT License
+* Update depends in pyproject.toml
+
 ## 0.0.1.1
 
 * Fix & Refactor define_writer
