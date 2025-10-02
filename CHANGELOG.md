@@ -1,5 +1,10 @@
 # Version History
 
+## 0.0.1.4
+
+* Add auto_detector(fileobj) function to detect compression from file
+* Update README.md
+
 ## 0.0.1.3
 
 * Refactor ZSTDCompressor

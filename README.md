@@ -10,6 +10,14 @@ Supported compression formats: **LZ4** and **ZSTD** only.
 
 ## Examples
 
+### File detect compression only
+
+```python
+from light_compressor import auto_detector
+fileobj = open("some_path_to_file.bin", "rb")
+compressor_method = auto_detector(fileobj)
+```
+
 ### File reading
 
 When reading from files, automatic compression format detection is available (checks for LZ4/ZSTD signatures or no compression):

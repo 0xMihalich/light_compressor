@@ -3,7 +3,10 @@
 from _compression import DecompressReader
 from io import BufferedReader
 
-from .compressor_method import CompressionMethod
+from .compressor_method import (
+    auto_detector,
+    CompressionMethod,
+)
 from .decompressors import (
     LZ4Decompressor,
     ZSTDDecompressor,
@@ -17,19 +20,7 @@ def define_reader(
     """Select current method for stream object."""
 
     if not compressor_method:
-        """Auto detect method section from file signature.
-        Warning!!! Not work with stream objects!!!"""
-
-        pos = fileobj.tell()
-        signature = fileobj.read(4)
-        fileobj.seek(pos)
-
-        if signature == b"\x04\"M\x18":
-            compressor_method = CompressionMethod.LZ4
-        elif signature == b"(\xb5/\xfd":
-            compressor_method = CompressionMethod.ZSTD
-        else:
-            compressor_method = CompressionMethod.NONE
+        compressor_method = auto_detector(fileobj)
 
     if compressor_method == CompressionMethod.NONE:
         return fileobj
