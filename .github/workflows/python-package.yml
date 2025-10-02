@@ -33,7 +33,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         python -m pip install typing-extensions --upgrade
-        python -m pip install cffi  # Явно устанавливаем cffi
+        python -m pip install cffi
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Install build dependencies
@@ -42,16 +42,13 @@ jobs:
         
     - name: Build and install package
       run: |
-        pip install -e .  # Установка в режиме разработки
-        # Или альтернативно:
-        # python -m build
-        # pip install .
+        pip install -e .
         
     - name: Lint with flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics
         
     - name: Test with pytest
       run: |
-        pytest -v tests/tests.py
+        pytest -v tests

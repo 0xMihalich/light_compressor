@@ -15,9 +15,9 @@ from light_compressor import (
 fileobj = BytesIO()
 
 bytes_data = [
-    randbytes(randint(10, 40))  # noqa: S311
+    randbytes(randint(20, 40))  # noqa: S311
     for _ in range(100)
-] * 10
+] * 100
 
 
 def decompress(compression_method: CompressionMethod) -> None:
@@ -39,7 +39,6 @@ def test_file() -> None:
         fileobj.truncate()
         full_data = b"".join(bytes_data)
         decompressed_size = len(full_data)
-        print(f"start check for {compression_method.name}")
 
         if compression_method == CompressionMethod.LZ4:
             compressor = LZ4Compressor()
@@ -50,7 +49,8 @@ def test_file() -> None:
             fileobj.write(data)
 
         assert decompressed_size == compressor.decompressed_size  # noqa: S101
-
+        print(fileobj.tell())
+        print(compressor.decompressed_size)
         decompress(compression_method)
 
 
@@ -68,3 +68,23 @@ def test_stream() -> None:
             fileobj.write(data)
 
         decompress(compression_method)
+
+
+def test_autodetection() -> None:
+
+    for compression_method in (
+        CompressionMethod.NONE,
+        CompressionMethod.LZ4,
+        CompressionMethod.ZSTD,
+    ):
+        fileobj.seek(0)
+        fileobj.truncate()
+
+        for data in define_writer(bytes_data, compression_method):
+            fileobj.write(data)
+
+        fileobj.seek(0)
+        full_data = b"".join(bytes_data)
+        decompressed_size = len(full_data)
+        stream = define_reader(fileobj)
+        assert full_data == stream.read(decompressed_size)  # noqa: S101

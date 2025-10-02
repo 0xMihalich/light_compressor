@@ -51,8 +51,9 @@ from light_compressor import (
     define_reader,
     CompressionMethod,
 )
+compressed_stream: urllib3.response.HTTPResponse
 # Get decompressed file-like object from ZSTD-compressed stream
-decompressed_stream = define_reader(fileobj, CompressionMethod.ZSTD)
+decompressed_stream = define_reader(compressed_stream, CompressionMethod.ZSTD)
 ```
 
 ### Stream writing

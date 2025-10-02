@@ -1,5 +1,12 @@
 # Version History
 
+## 0.0.1.3
+
+* Refactor ZSTDCompressor
+* Add test auto compression detection
+* Rename tests/tests.py to tests/test_all.py
+* Update README.md
+
 ## 0.0.1.2
 
 * Add MIT License
