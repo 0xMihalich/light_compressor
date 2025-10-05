@@ -1,0 +1,23 @@
+include CHANGELOG.md
+include README.md
+include LICENSE
+
+include src/light_compressor/compressors/*.pyx
+include src/light_compressor/decompressors/*.pyx
+include src/light_compressor/compressors/*.pxd
+include src/light_compressor/decompressors/*.pxd
+recursive-include src/light_compressor *.pyx
+recursive-include src/light_compressor *.pxd
+
+exclude src/light_compressor/compressors/*.c
+exclude src/light_compressor/decompressors/*.c
+recursive-exclude src/light_compressor *.c
+
+exclude *.c
+exclude *.pyd
+exclude src/*.c
+exclude src/*.pyd
+exclude src/**/*.c
+exclude src/**/*.pyd
+global-exclude *.c
+global-exclude *.pyd

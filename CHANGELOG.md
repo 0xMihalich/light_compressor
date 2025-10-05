@@ -1,5 +1,11 @@
 # Version History
 
+## 0.0.1.5
+
+* Add MANIFEST.in
+* Add CHANGELOG.md to pip package
+* Improve pyproject.toml license file approve
+
 ## 0.0.1.4
 
 * Add auto_detector(fileobj) function to detect compression from file
