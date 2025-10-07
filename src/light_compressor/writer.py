@@ -14,12 +14,12 @@ def define_writer(
 ) -> Generator[bytes, None, None]:
     """Select current method for stream object."""
 
-    if compressor_method == CompressionMethod.NONE:
+    if compressor_method is CompressionMethod.NONE:
         return bytes_data
 
-    if compressor_method == CompressionMethod.LZ4:
+    if compressor_method is CompressionMethod.LZ4:
         compressor = LZ4Compressor()
-    elif compressor_method == CompressionMethod.ZSTD:
+    elif compressor_method is CompressionMethod.ZSTD:
         compressor = ZSTDCompressor()
     else:
         raise ValueError(f"Unsupported compression method {compressor_method}")

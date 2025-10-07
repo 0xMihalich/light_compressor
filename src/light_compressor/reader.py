@@ -22,10 +22,10 @@ def define_reader(
     if not compressor_method:
         compressor_method = auto_detector(fileobj)
 
-    if compressor_method == CompressionMethod.NONE:
+    if compressor_method is CompressionMethod.NONE:
         return fileobj
 
-    if compressor_method == CompressionMethod.LZ4:
+    if compressor_method is CompressionMethod.LZ4:
         decompressor = LZ4Decompressor
     elif compressor_method == CompressionMethod.ZSTD:
         decompressor = ZSTDDecompressor

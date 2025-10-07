@@ -1,5 +1,9 @@
 # Version History
 
+## 0.0.1.6
+
+* Refactor functions check: replace == to is
+
 ## 0.0.1.5
 
 * Add MANIFEST.in
