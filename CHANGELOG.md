@@ -1,5 +1,11 @@
 # Version History
 
+## 0.0.1.7
+
+* Add *.pyi files for cython modules descriptions
+* Fix tests
+* Update MANIFEST.in
+
 ## 0.0.1.6
 
 * Refactor functions check: replace == to is

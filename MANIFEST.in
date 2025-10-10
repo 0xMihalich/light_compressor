@@ -4,9 +4,12 @@ include LICENSE
 
 include src/light_compressor/compressors/*.pyx
 include src/light_compressor/decompressors/*.pyx
+include src/light_compressor/compressors/*.pyi
+include src/light_compressor/decompressors/*.pyi
 include src/light_compressor/compressors/*.pxd
 include src/light_compressor/decompressors/*.pxd
 recursive-include src/light_compressor *.pyx
+recursive-include src/light_compressor *.pyi
 recursive-include src/light_compressor *.pxd
 
 exclude src/light_compressor/compressors/*.c

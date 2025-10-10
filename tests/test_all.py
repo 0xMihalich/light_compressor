@@ -49,8 +49,6 @@ def test_file() -> None:
             fileobj.write(data)
 
         assert decompressed_size == compressor.decompressed_size  # noqa: S101
-        print(fileobj.tell())
-        print(compressor.decompressed_size)
         decompress(compression_method)
 
 
