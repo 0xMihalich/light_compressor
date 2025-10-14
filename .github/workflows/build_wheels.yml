@@ -1,0 +1,44 @@
+name: Build wheels
+
+on:
+  push:
+    tags: ["*"]
+  release:
+    types: [published]
+  workflow_dispatch:  # Разрешает ручной запуск
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install git+https://github.com/pypa/cibuildwheel.git
+
+    - name: Build wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
+        CIBW_SKIP: "*-musllinux* pp38-* pp39-* *-i686"
+        CIBW_TEST_REQUIRES: "pytest"
+        CIBW_TEST_COMMAND: "pytest {project}/tests -x"
+
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{ matrix.os }}
+        path: wheel_prebuild/*.whl
+        retention-days: 30
