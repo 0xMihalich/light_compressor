@@ -2,7 +2,10 @@ name: Build wheels and create release
 
 on:
   push:
-    tags: ["v*"]
+    tags: ["*"]
+  release:
+    types: [published]
+  workflow_dispatch:  # Разрешает ручной запуск
 
 jobs:
   build_wheels:
