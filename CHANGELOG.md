@@ -1,5 +1,11 @@
 # Version History
 
+## 0.0.1.8
+
+* Add python 3.14 support
+* Add wheels automake
+* Add auto upload to pip
+
 ## 0.0.1.7
 
 * Add *.pyi files for cython modules descriptions

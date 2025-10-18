@@ -26,4 +26,4 @@ __all__ = (
     "ZSTDCompressor",
     "ZSTDDecompressor",
 )
-__version__ = "0.0.1.7"
+__version__ = "0.0.1.8"
