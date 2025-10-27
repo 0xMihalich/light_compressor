@@ -1,5 +1,14 @@
 # Version History
 
+## 0.0.1.9
+
+* Update depends setuptools>=80.9.0
+* Update depends cffi>=1.17.1
+* Update depends lz4>=4.4.3
+* Update depends zstandard>=0.23.0
+* Precompiled wheels are now compatible with airflow >= 2.4.3
+without change any constraits
+
 ## 0.0.1.8
 
 * Add python 3.14 support

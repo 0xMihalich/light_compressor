@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel", "Cython>=3.0"]
+requires = ["setuptools>=80.9.0", "wheel", "Cython>=3.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "light_compressor"
-version = "0.0.1.8"
+version = "0.0.1.9"
 description = "Library for read compressed stream and write compressed chunks."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -22,9 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-    "cffi>=2.0.0",
-    "lz4>=4.4.4",
-    "zstandard>=0.25.0",
+    "cffi>=1.17.1",
+    "lz4>=4.4.3",
+    "zstandard>=0.23.0",
 ]
 
 [project.urls]
